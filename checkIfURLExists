@@ -1,0 +1,11 @@
+#! /bin/bash -
+# */3 * * * *  /bin/bash /shell/checkIfURLExists "127.0.0.1:8888" "/etc/init.d/archiva startnow" > /shell/log/checkIfExists127.0.0.1.8888
+checkIfExists(){
+	if /usr/bin/curl --output /dev/null --silent --head --fail "$1"; then
+		echo "URL exists: $1"
+	else
+		echo "URL does not exist: $1"
+		$(/usr/bin/nohup $2 > /dev/null 2>&1 &)
+	fi
+}
+checkIfExists $@
